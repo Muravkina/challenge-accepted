@@ -17,13 +17,24 @@ class ChallengesController <ApplicationController
     @challenge.is_public = params['challenge']['is_public']
     @challenge.challenger_email = params['challenge']['challenger_email']
     @challenge.creator_id = current_user.id
+    @creator = User.find(@challenge.creator_id)
     if @challenge.save
-      tags = @challenge.tags.tr(',', '').tr('#','').split()
-      tags.each do |tag|
-        @tag = Tag.new
-        @tag.name = tag
-        @tag.challenge_id = @chalenge.id
-        @tag.save
+      if params['challenge']['tags'] != "" && params['challenge']['tags'] != nil
+        tags = @challenge.tags.tr(',', '').tr('#','').split()
+        tags.each do |tag|
+          @tag = Tag.new
+          @tag.name = tag
+          @tag.challenge_id = @chalenge.id
+          @tag.save
+        end
+      end
+      if @challenge.is_public != true
+        UserMailer.invite_email(@challenge.challenger_email, @creator, @challenge).deliver_now
+
+        if User.find_by({email: params['challenge']['challenger_email']})
+          @user = User.find_by({email: params['challenge']['challenger_email']})
+          @challenge.challenger_id = @user.id
+        end
       end
       redirect_to "/challenges/#{@challenge.id}"
     else
@@ -34,6 +45,7 @@ class ChallengesController <ApplicationController
   def show
     @challenge = Challenge.find(params[:id])
     @author = User.find(@challenge.creator_id)
+    @challenger = User.find_by({email: @challenge.challenger_email})
     @tags = @challenge.tags
     if current_user
       @user = User.find(session[:user_id])

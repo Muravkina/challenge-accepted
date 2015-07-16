@@ -8,7 +8,7 @@
 <%= link_to 'Description', @challenge %>
 <%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge) %>
 <% @accomplished_challenges.each do | accomplished | %>
-  <h1><a href="/accepted_challenges/<%= accomplished.id %>"><%= "#{accomplished.user.first_name} #{accomplished.user.last_name}" %></h1>
+  <h1><a href="/accepted_challenges/<%= accomplished.id %>"><%= "#{accomplished.user.first_name} #{accomplished.user.last_name}" %></a></h1>
   <img src="<%= accomplished.proofs[0].proof_url %>">
   <%= accomplished.remark %>
 <% end %>

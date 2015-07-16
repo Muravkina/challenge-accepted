@@ -19,12 +19,10 @@
 <%= form.text_field :sample_url %>
 <%= form.label 'Is it public?' %>
 <%= form.check_box :is_public, class: 'checkbox' %>
-
-  <%= form.check_box 'Does user have a challenge account?', class: "private_section %>
-
+<div class= "private_section" >
   <%= form.label 'Challenger email' %>
   <%= form.text_field :challenger_email %>
-
+</div>
 <%= form.label 'Tags' %>
 <%= text_field_tag :tags %>
 

@@ -9,6 +9,9 @@
 <%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge) %>
 
 <p>Author: <%= "#{@author.first_name} #{@author.last_name}" %></p>
+<% if @challenger %>
+  <p>Challenger: <%= "#{@challenger.first_name} #{@challenger.last_name}" %></p>
+<% end %>
 <p>Location: <%= @challenge.location %></p>
 <p>Time limit: <%= @challenge.time_limit %></p>
 <p>Proof:

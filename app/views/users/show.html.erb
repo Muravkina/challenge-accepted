@@ -34,6 +34,17 @@
   <p>Badges: </p>
 </div><!--user_info-->
 
+<div class="notification_board">
+  <% if !@received_challenges.empty? %>
+    <% @received_challenges.each do |challenge| %>
+     <% author = User.find(challenge.creator_id) %>
+    <p>You've been challenged by <%= "#{author.first_name} #{author.last_name}" %></p>
+    <p>Check it out: <%= link_to challenge.name, challenge %>, and don't forget to accept it!</p>
+    <hr>
+    <% end %>
+  <% end %>
+</div>
+
 <div id="user_edit" style="display: none;">
 <h1>Edit Profile</h1>
 <button>Change Password</button>

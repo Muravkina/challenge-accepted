@@ -7,6 +7,13 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
+      @invited_challenges = Challenge.where({challenger_email: @user.email})
+      if !@invited_challenges.empty?
+        @invited_challenges.each do | challenge |
+        challenge.challenger_id = session[:user_id]
+        challenge.save
+      end
+    end
       redirect_to @user
     else
       render :new
@@ -15,6 +22,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @received_challenges = @user.received_challenges
   end
 
   def update

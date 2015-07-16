@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>You've been challenged by <%= "#{@creator.first_name} #{@creator.last_name}" %></h1>
+    <h3><%= @challenge.name %></h3>
+    <p><%= @challenge.description %>
+      To learn more and accept the challenge go to the website
+      <%= link_to "Challenge Accepted", root_url %>
+    </p>
+  </body>
+</html>
