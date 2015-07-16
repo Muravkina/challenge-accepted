@@ -2,17 +2,24 @@ Rails.application.routes.draw do
 
   root 'sessions#new'
 
-  get    '/login' => 'sessions#new'
   post   '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
+
+  get 'auth/:provider/callback' => 'sessions#create'
+  get 'auth/failure' => '/'
+  get '/signout' => 'sessions#destroy'
+
+  get '/users/:user_id/challenges/in_progress' => 'challenges#in_progress'
+  get '/users/:user_id/challenges/created' => 'challenges#created'
+  get '/users/:user_id/challenges/accomplished' => 'challenges#accomplished'
 
   resources :users do
     resources :challenges
   end
 
   resources :challenges do
-    resources :accomplished_challenges
+    resources :accepted_challenges, only: [:index]
   end
 
-  resources :accomplished_challenges, only: [:show]
+  resources :accepted_challenges
 end

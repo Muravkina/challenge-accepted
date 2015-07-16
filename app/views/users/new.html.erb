@@ -1,0 +1,25 @@
+<h1>Sign Up</h1>
+<%= form_for @user do |form| %>
+
+  <%= form.label :username %><br>
+  <%= form.text_field :username %><br>
+
+  <%= form.label :first_name %><br>
+  <%= form.text_field :first_name %><br>
+
+  <%= form.label :last_name %><br>
+  <%= form.text_field :last_name %><br>
+
+  <%= form.label :email %><br>
+  <%= form.text_field :email %><br>
+
+  <%= form.label "Password" %><br>
+  <%= form.password_field :password %><br>
+
+  <%= form.label "Repeat password" %><br>
+  <%= form.password_field :password_confirmation %><br>
+
+  <%= form.submit 'Sign Up' %>
+  <%= form.submit "clear", :type => "reset" %>
+
+<% end %>

@@ -1,0 +1,7 @@
+<h1>Edit Challenge</h1>
+<%= form_for [@user, @challenge] do |form| %>
+  <%= render form %>
+  <%= form.submit 'Edit Challenge' %>
+  <%= form.submit "clear", :type => "reset" %>
+
+<% end %>

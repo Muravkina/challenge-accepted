@@ -1,0 +1,38 @@
+html, body{
+  height: 100%;
+  min-height: 100%;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  min-width: 200px;
+}
+
+ul.navigation li {
+  float:left;
+  border: 1px black solid;
+  min-width: 200px;
+}
+ul.sub_navigation {
+  position:absolute;
+  display:none;
+
+}
+ul.sub_navigation li {
+  clear:both;
+}
+
+.navigation li:hover .sub_navigation {
+  display:block;
+}
+
+.navigation span {
+  margin: 20px;
+}
+.user_info {
+  clear: both;
+  margin-top: 100px;
+}
+
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713190821) do
+ActiveRecord::Schema.define(version: 20150716133558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,9 +20,7 @@ ActiveRecord::Schema.define(version: 20150713190821) do
     t.integer  "challenge_id"
     t.boolean  "is_accomplished", default: false
     t.text     "remark"
-    t.string   "proof_1_url"
-    t.string   "proof_2_url"
-    t.string   "proof_3_url"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -38,8 +36,10 @@ ActiveRecord::Schema.define(version: 20150713190821) do
     t.string   "img_url",           default: "http://img06.deviantart.net/3395/i/2014/022/6/6/stardust_texture_ii__by_galaxiesanddust-d739shx.jpg"
     t.text     "proof_description"
     t.text     "description",                                                                                                                       null: false
+    t.string   "sample_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "challenger_email"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -66,18 +66,22 @@ ActiveRecord::Schema.define(version: 20150713190821) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                                                                                                                                                           null: false
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "username",                                                                                                                                                        null: false
-    t.string   "password_digest",                                                                                                                                                 null: false
+    t.string   "email",                                                                                                                                                            null: false
+    t.string   "username"
+    t.string   "password_digest",                                                                                                                                                  null: false
     t.string   "location"
     t.string   "gender"
-    t.date     "bith_date"
-    t.string   "img_url",         default: "http://at-cdn-s01.audiotool.com/2014/02/26/documents/fixit_-_challenge_accepted/2/cover256x256-adb5b94f4a6a4017a4933d9c63e696b3.jpg"
+    t.date     "birth_date"
+    t.string   "img_url",          default: "http://at-cdn-s01.audiotool.com/2014/02/26/documents/fixit_-_challenge_accepted/2/cover256x256-adb5b94f4a6a4017a4933d9c63e696b3.jpg"
     t.string   "phone_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "oauth_token"
+    t.datetime "oauth_expires_at"
   end
 
 end

@@ -1,0 +1,63 @@
+<img src="<%= @challenge.img_url%>" width= "60%" height= "100px">
+<h1><%= @challenge.name %></h1>
+<% if @challenge.is_public %>
+  <p> Public </p>
+<% else %>
+  <p> Private </p>
+<% end %>
+<%= link_to 'Description', @challenge %>
+<%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge) %>
+
+<p>Author: <%= "#{@author.first_name} #{@author.last_name}" %></p>
+<p>Location: <%= @challenge.location %></p>
+<p>Time limit: <%= @challenge.time_limit %></p>
+<p>Proof:
+  <% if @challenge.is_proof_required %>
+    <%= @challenge.proof_description %>
+  <% else %>
+    <span>NOT REQUIRED </span>
+  <% end %>
+</p>
+<p>Tags: <% @tags.each do |tag| %>
+    <span><%= tag.name %></span>
+  <% end %>
+</p>
+
+<% if current_user %>
+  <%= link_to 'Edit Challenge', edit_user_challenge_path(@author, @challenge) %>
+  <%= form_tag(challenge_path, method: :delete) do %>
+    <%= submit_tag 'Delete Challenge' %>
+  <% end %>
+  <% if @user_accomplished_challenge %>
+    <p>Done</p>
+  <% elsif @user_accepted_challenge %>
+  <button class= "this_challenge_accomplished">Done</button>
+
+<!-- Form template -->
+
+  <div id="user_accomplished_challenge" style="display: none;">
+  <h1>Weel Done</h1>
+  <%= form_for @user_accepted_challenge do |form| %>
+    <%= form.label 'Provide Proof' %>
+    <%= form.fields_for :proofs do |proof| %>
+      <%= proof.text_field :proof_url %>
+      <% proof.index %>
+      <% end %>
+    <%= form.label 'Leave comment:' %>
+    <%= form.text_field :remark %>
+    <%= form.submit 'Finish It' %>
+    <%= form.submit "clear", :type => "reset" %>
+  <% end %>
+</div>
+
+
+  <% else %>
+    <div id="accept_challenge_button">
+      <button class="accept_challenge_button">Accept Challenge</button>
+    </div>
+    <%= content_tag :div, class: 'user_challenge', data:{ user_id: @user.id, challenge_id: @challenge.id} do %>
+    <% end %>
+  <% end %>
+  Share Challenge
+  Invite
+<% end %>

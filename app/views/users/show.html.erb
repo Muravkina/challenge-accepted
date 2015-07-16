@@ -1,0 +1,58 @@
+
+  <ul class="navigation">
+    <li><span>Profile</span>
+      <ul class="sub_navigation">
+        <li><%= link_to "Edit Profile", edit_user_path(@user), class: 'edit_profile_button' %></li>
+        <li><%= form_tag(user_path, method: :delete) do %>
+            <%= submit_tag 'Delete profile' %>
+            <% end %>
+        </li>
+      </ul>
+    </li>
+    <li><span>Challenges</span>
+      <ul class="sub_navigation">
+        <li><%= link_to 'All challenges', challenges_path %></li>
+        <li><%= link_to 'My challenges', user_challenges_path(@user) %></li>
+        <li><%= link_to 'Create Challenge', new_user_challenge_path(@user) %></li>
+      </ul>
+    </li>
+    <li><span><%= link_to "Logout", logout_path, method: "DELETE" %></span></li>
+  </ul>
+
+<div class="user_info">
+  <img src="<%= @user.img_url %>">
+  <p>Username: <%= @user.username %></p>
+  <p>Name: <%= "#{@user.first_name} #{@user.last_name}" %></p>
+  <p>Email: <%= @user.email %></p>
+  <p>Location: <%= @user.location %></p>
+  <p>Phone #: <%= @user.phone_number %></p>
+  <p>Gender: <%= @user.gender %></p>
+  <p>Birth Date: <%= @user.birth_date %></p>
+  <p>Participating since: <%= @user.created_at %></p>
+  <p>Created Challenges: <%= @user.created_challenges.count %></p>
+  <p>Accepted Challenges <%= @user.accepted_challenges.count %></p>
+  <p>Badges: </p>
+</div><!--user_info-->
+
+<div id="user_edit" style="display: none;">
+<h1>Edit Profile</h1>
+<button>Change Password</button>
+<%= form_for @user do |form| %>
+  <%= label_tag(:label, "First Name:") %>
+  <%= form.text_field :first_name %><br>
+  <%= label_tag :label, "Last Name:" %>
+  <%= form.text_field :last_name %><br>
+  <%= label_tag(:label, 'Username') %>
+  <%= form.text_field :username %><br>
+  <%= label_tag(:label, 'Location') %>
+  <%= form.text_field :location %><br>
+  <%= label_tag(:label, 'Gender') %>
+  <%= form.select(:gender, options_for_select(['Male', 'Female'], selected: @user.gender ) ) %><br>
+  <%= label_tag(:label, 'Image') %>
+  <%= text_field_tag :img_url %><br>
+  <%= label_tag(:label, 'Phone Number') %>
+  <%= form.text_field :phone_number %><br>
+  <%= form.submit "Clear", :type => "reset" %>
+  <%= form.submit 'Edit', class: "submit_edit" %>
+<% end %>
+</div>

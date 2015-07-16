@@ -1,0 +1,17 @@
+Sort by:
+Search:
+<% if @user_challenges %>
+
+  <div class= "tabs">
+    <%= link_to 'Created', user_challenges_path(@user) %>
+    <a href="/users/<%= @user.id %>/challenges/in_progress">In progress</a>
+    <a href="/users/<%= @user.id %>/challenges/accomplished">Accomplished</a>
+  </div>
+
+  <% @user_challenges.each do |challenge| %>
+    <div><img src="<%= challenge.challenge.img_url %>"></div>
+    <h1><%= link_to challenge.challenge.name, challenge.challenge %></h1>
+    <p><%= challenge.challenge.description %></p>
+  <% end %>
+
+<% end %>

@@ -1,0 +1,51 @@
+<div class="authorize">
+  <button class="log_in">Log In</button>
+  <button class="sign_up_button">Sign Up</button>
+</div> <!--authorize-->
+
+<div class="introduction">
+  <img src="">
+  <h1>Challenge Accepted</h1>
+  <p>Bla bla bla, that's what this website is about</p>
+</div><!--introduction-->
+
+<div class="site_explanation">
+  <h1>How It Works</h1>
+  <div class="create_challenge">
+    <img>
+    <p>Create Challenge</p>
+  </div><!--create challenge-->
+  <div class="share_challenge">
+    <img>
+    <p>Share Challenge</p>
+  </div><!--share challenge-->
+  <div class="accept_challenge">
+    <img>
+    <p>Accept Challenge</p>
+  </div><!--accept challenge-->
+  <div class="invite_others">
+    <img>
+    <p>Invite Others</p>
+  </div><!--invite others-->
+</div><!--site_explanation-->
+<%= link_to 'Explore Challenges', challenges_path %>
+
+<div id="log_in" style="display:none;">
+<h1>Welcome</h1>
+<%= form_tag '/login' do %>
+  <%= label_tag(:label, "Email:") %>
+  <%= text_field_tag :email %><br>
+  <%= label_tag :label, "Password:" %>
+  <%= password_field_tag :password %><br>
+  <%= submit_tag "Log In" %>
+  <p>OR</p>
+  <%= link_to "Log in with Facebook", "/auth/facebook", id: "sign_in" %>
+<% end %>
+</div>
+
+<div id="sign_up" style='display:none;'>
+  <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
+  <%= link_to 'Regular Sign Up', new_user_path %>
+</div>
+
+<%= javascript_include_tag 'main' %>
