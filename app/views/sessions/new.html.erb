@@ -1,6 +1,11 @@
 <div class="authorize">
-  <button class="log_in">Log In</button>
-  <button class="sign_up_button">Sign Up</button>
+  <% if current_user %>
+    <%= link_to "Log Out", signout_path %>
+    <%= link_to "Profile", current_user %>
+  <% else %>
+    <button class="log_in">Log In</button>
+    <button class="sign_up_button">Sign Up</button>
+  <% end %>
 </div> <!--authorize-->
 
 <div class="introduction">

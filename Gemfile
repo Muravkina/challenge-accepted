@@ -27,8 +27,9 @@ gem 'paperclip'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'figaro'
-gem 'ffaker', '~> 2.0.0'
-gem 'mustache-js-rails'
+gem 'ffaker'
+gem 'aws-sdk', '< 2.0'
+gem 's3_direct_upload'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

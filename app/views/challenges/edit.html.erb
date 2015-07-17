@@ -1,7 +1,11 @@
+<header>
+  <%= link_to "Challenges", challenges_path %>
+  <%= link_to "Profile", current_user %>
+  <%= link_to "Log Out", signout_path %>
+</header>
 <h1>Edit Challenge</h1>
 <%= form_for [@user, @challenge] do |form| %>
   <%= render form %>
   <%= form.submit 'Edit Challenge' %>
   <%= form.submit "clear", :type => "reset" %>
-
 <% end %>

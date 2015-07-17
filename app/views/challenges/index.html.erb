@@ -1,5 +1,11 @@
-Sort by:
-Search:
+<header>
+  <% if current_user %>
+    <%= link_to "Profile", current_user %>
+    <%= link_to "Log Out", signout_path %>
+  <% else %>
+    <%= link_to "Home", root_path %>
+  <% end %>
+</header>
 
 <% if @user %>
 
@@ -26,4 +32,5 @@ Search:
     <p><%= challenge.description %></p>
   <% end %>
 <% end %>
+
 

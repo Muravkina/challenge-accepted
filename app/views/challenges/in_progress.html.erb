@@ -1,5 +1,12 @@
-Sort by:
-Search:
+<header>
+  <% if current_user %>
+    <%= link_to "Profile", current_user %>
+    <%= link_to "Log Out", signout_path %>
+  <% else %>
+    <%= link_to "Home", root_path %>
+  <% end %>
+</header>
+
 <% if @user_challenges %>
 
   <div class= "tabs">
@@ -7,7 +14,6 @@ Search:
     <a href="/users/<%= @user.id %>/challenges/in_progress">In progress</a>
     <a href="/users/<%= @user.id %>/challenges/accomplished">Accomplished</a>
   </div>
-
   <% @user_challenges.each do |challenge| %>
     <div><img src="<%= challenge.challenge.img_url %>"></div>
     <h1><%= link_to challenge.challenge.name, challenge.challenge %></h1>

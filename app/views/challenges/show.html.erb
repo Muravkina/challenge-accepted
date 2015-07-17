@@ -1,3 +1,21 @@
+<% content_for :head do %>
+  <!-- Facebook sharing content -->
+  <meta property="og:title"              content="<%= @challenge.name %>" />
+  <meta property="og:description"        content="<%= @challenge.description %>" />
+  <meta property="og:image"              content="<%= @challenge.img_url %>" />
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width"        content="1200" />
+  <meta property="og:image:height"        content="1200" />
+<% end %>
+
+<header>
+  <%= link_to "Home", root_path %>
+  <% if current_user %>
+    <%= link_to "Profile", current_user %>
+    <%= link_to "Log Out", signout_path %>
+  <% end %>
+</header>
+
 <img src="<%= @challenge.img_url%>" width= "60%" height= "100px">
 <h1><%= @challenge.name %></h1>
 <% if @challenge.is_public %>
@@ -12,6 +30,7 @@
 <% if @challenger %>
   <p>Challenger: <%= "#{@challenger.first_name} #{@challenger.last_name}" %></p>
 <% end %>
+
 <p>Location: <%= @challenge.location %></p>
 <p>Time limit: <%= @challenge.time_limit %></p>
 <p>Proof:
@@ -21,46 +40,62 @@
     <span>NOT REQUIRED </span>
   <% end %>
 </p>
+
 <p>Tags: <% @tags.each do |tag| %>
     <span><%= tag.name %></span>
   <% end %>
 </p>
 
-<% if current_user %>
+<% if current_user == @challenge.creator %>
   <%= link_to 'Edit Challenge', edit_user_challenge_path(@author, @challenge) %>
   <%= form_tag(challenge_path, method: :delete) do %>
     <%= submit_tag 'Delete Challenge' %>
   <% end %>
-  <% if @user_accomplished_challenge %>
+<% end %>
+
+<% if @user_accomplished_challenge %>
     <p>Done</p>
-  <% elsif @user_accepted_challenge %>
+<% elsif @user_accepted_challenge %>
   <button class= "this_challenge_accomplished">Done</button>
-
 <!-- Form template -->
-
   <div id="user_accomplished_challenge" style="display: none;">
-  <h1>Weel Done</h1>
-  <%= form_for @user_accepted_challenge do |form| %>
-    <%= form.label 'Provide Proof' %>
-    <%= form.fields_for :proofs do |proof| %>
-      <%= proof.text_field :proof_url %>
-      <% proof.index %>
-      <% end %>
+  <h1>Well Done</h1>
+  <%= form_for @user_accepted_challenge, :html => { :multipart => true } do |form| %>
+    <% if @challenge.is_proof_required == true %>
+      <%= form.label 'The author requested a proof that you accomplished the challenge' %>
+      <%= form.fields_for :proofs do |proof| %> <br>
+        <% if @challenge.proof_description == "Photo" %>
+          <%= proof.label 'Enter image URL' %>
+          <%= proof.text_field :proof_url, placeholder: "Image URL" %><br>
+          <%= proof.label 'Upload image' %>
+          <%= proof.file_field :photo %><br>
+        <% elsif @challenge.proof_description == "Video" %>
+          <%= proof.label 'Enter video URL' %>
+          <%= proof.text_field :proof_url, placeholder: "Video URL" %><br>
+          <%= proof.label 'Upload video' %>
+          <%= proof.file_field :video %><br>
+        <% end %>
+        <% proof.index %>
+        <% end %>
+    <% end %>
     <%= form.label 'Leave comment:' %>
-    <%= form.text_field :remark %>
+    <%= form.text_field :remark %><br>
     <%= form.submit 'Finish It' %>
     <%= form.submit "clear", :type => "reset" %>
   <% end %>
 </div>
 
+<% elsif current_user %>
+  <div id="accept_challenge_button">
+    <button class="accept_challenge_button">Accept Challenge</button>
+  </div>
+<% end %>
 
-  <% else %>
-    <div id="accept_challenge_button">
-      <button class="accept_challenge_button">Accept Challenge</button>
-    </div>
-    <%= content_tag :div, class: 'user_challenge', data:{ user_id: @user.id, challenge_id: @challenge.id} do %>
-    <% end %>
+
+<div class="fb-share-button"  data-layout="button_count"></div>
+
+<% if current_user %>
+  <%= content_tag :div, class: 'user_challenge', data:{ user_id: @user.id, challenge_id: @challenge.id, current_user: current_user.id, commentable_type: "Challenge" } do %>
   <% end %>
-  Share Challenge
-  Invite
+  <%= render 'comments' %>
 <% end %>

@@ -1,28 +1,27 @@
 <%= form.label :name %>
-<%= form.text_field :name %>
+<%= form.text_field :name %> <br>
 <%= form.label :description %>
-<%= form.text_field :description %>
+<%= form.text_field :description %> <br>
 <%= form.label :location %>
-<%= form.text_field :location %>
+<%= form.text_field :location %> <br>
 <%= form.label 'Image' %>
-<%= text_field_tag :img_url %>
+<%= text_field_tag :img_url %> <br>
 <%= form.label 'Time Limit' %>
-<%= form.select(:time_limit, options_for_select(['Day', 'Week', 'Month', '6 Months', 'Year'], selected: @challenge.time_limit )) %>
+<%= form.select(:time_limit, options_for_select(['Day', 'Week', 'Month'], selected: @challenge.time_limit )) %> <br>
 <%= form.label 'Proof' %>
-<%= form.check_box :is_proof_required %>
-<p>Please, describe what kind of proof is required. It can be a image, video, text file or link (up to 3 items)</p>
-<%= form.radio_button :proof_description, "Video" %>Video (1)
-<%= form.radio_button :proof_description, "Image" %>Images (up to 3)
-<%= form.radio_button :proof_description, "Text file" %>Text File (up to 3)
-<%= form.radio_button :proof_description, "Link" %>Link (up to 3)
-<%= form.label 'Sample' %>
-<%= form.text_field :sample_url %>
-<%= form.label 'Is it public?' %>
-<%= form.check_box :is_public, class: 'checkbox' %>
+<%= form.check_box :is_proof_required, class: "proof_checkbox" %><br>
+<div class="proof_required" style="display: none">
+  <p>Please, specify what kind of proof is required. </br>
+  <%= form.radio_button :proof_description, "Video" %>Video (1)
+  <%= form.radio_button :proof_description, "Image" %>Images (up to 3)
+  <%= form.radio_button :proof_description, "Link" %>Link (up to 3)
+</div>
+  <%= form.label 'Is it public?' %>
+<%= form.check_box :is_public, class: 'checkbox' %><br>
 <div class= "private_section" >
   <%= form.label 'Challenger email' %>
-  <%= form.text_field :challenger_email %>
+  <%= form.text_field :challenger_email %><br>
 </div>
 <%= form.label 'Tags' %>
-<%= text_field_tag :tags %>
+<%= text_field_tag :tags %> <br>
 

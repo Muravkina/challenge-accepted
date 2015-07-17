@@ -34,5 +34,7 @@ ul.sub_navigation li {
   clear: both;
   margin-top: 100px;
 }
-
+.field_with_errors {
+  display: inline;
+}
 

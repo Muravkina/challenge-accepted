@@ -1,0 +1,13 @@
+<div class="challenge_comments">
+    <input type="text" name="comment" id="comment">
+    <button class="submit_comment">Add comment</button>
+  </form>
+  <div class="comments">
+    <% @challenge.comments.each do |comment| %>
+      <p>
+      <span><%= "#{comment.user.first_name} #{comment.user.last_name}" %></span>
+      <span><%= comment.body %></span>
+      </p>
+    <% end %>
+  </div>
+</div>

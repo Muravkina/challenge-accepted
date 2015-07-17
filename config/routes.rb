@@ -2,8 +2,7 @@ Rails.application.routes.draw do
 
   root 'sessions#new'
 
-  post   '/login' => 'sessions#create'
-  delete '/logout' => 'sessions#destroy'
+  post '/login' => 'sessions#create'
 
   get 'auth/:provider/callback' => 'sessions#create'
   get 'auth/failure' => '/'
@@ -13,6 +12,7 @@ Rails.application.routes.draw do
   get '/users/:user_id/challenges/created' => 'challenges#created'
   get '/users/:user_id/challenges/accomplished' => 'challenges#accomplished'
 
+  resources :comments, only: [:create]
   resources :users do
     resources :challenges
   end

@@ -1,4 +1,4 @@
-
+<% if current_user == @user %>
   <ul class="navigation">
     <li><span>Profile</span>
       <ul class="sub_navigation">
@@ -16,9 +16,11 @@
         <li><%= link_to 'Create Challenge', new_user_challenge_path(@user) %></li>
       </ul>
     </li>
-    <li><span><%= link_to "Logout", logout_path, method: "DELETE" %></span></li>
+    <li><span><%= link_to "Logout", signout_path %></span></li>
   </ul>
-
+<% else %>
+  <%= link_to 'User challenges', user_challenges_path(@user) %>
+<% end %>
 <div class="user_info">
   <img src="<%= @user.img_url %>">
   <p>Username: <%= @user.username %></p>
@@ -46,24 +48,45 @@
 </div>
 
 <div id="user_edit" style="display: none;">
-<h1>Edit Profile</h1>
-<button>Change Password</button>
-<%= form_for @user do |form| %>
-  <%= label_tag(:label, "First Name:") %>
-  <%= form.text_field :first_name %><br>
-  <%= label_tag :label, "Last Name:" %>
-  <%= form.text_field :last_name %><br>
-  <%= label_tag(:label, 'Username') %>
-  <%= form.text_field :username %><br>
-  <%= label_tag(:label, 'Location') %>
-  <%= form.text_field :location %><br>
-  <%= label_tag(:label, 'Gender') %>
-  <%= form.select(:gender, options_for_select(['Male', 'Female'], selected: @user.gender ) ) %><br>
-  <%= label_tag(:label, 'Image') %>
-  <%= text_field_tag :img_url %><br>
-  <%= label_tag(:label, 'Phone Number') %>
-  <%= form.text_field :phone_number %><br>
-  <%= form.submit "Clear", :type => "reset" %>
-  <%= form.submit 'Edit', class: "submit_edit" %>
-<% end %>
+  <h1>Edit Profile</h1>
+  <% if @user.errors.any? %>
+      <ul class="form_errors">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    <% end %>
+  <button class="change_password">Change Password</button>
+  <%= form_for @user do |form| %>
+    <%= label_tag(:label, "First Name:") %>
+    <%= form.text_field :first_name %><br>
+    <%= label_tag :label, "Last Name:" %>
+    <%= form.text_field :last_name %><br>
+    <%= label_tag(:label, 'Username') %>
+    <%= form.text_field :username %><br>
+    <%= label_tag :label, "Email:" %>
+    <%= form.email_field :email %><br>
+    <%= label_tag(:label, 'Location') %>
+    <%= form.text_field :location %><br>
+    <%= label_tag(:label, 'Gender') %>
+    <%= form.select(:gender, options_for_select(['Male', 'Female'], selected: @user.gender ) ) %><br>
+    <%= label_tag(:label, 'Image') %>
+    <%= text_field_tag :img_url %><br>
+    <%= label_tag(:label, 'Phone Number') %>
+    <%= form.text_field :phone_number %><br>
+    <%= form.submit "Clear", :type => "reset" %>
+    <%= form.submit 'Edit', class: "submit_edit" %>
+  <% end %>
+</div>
+
+<div id="change_password" style="display: none;">
+  <button class="edit_profile_button">Back</button>
+  <%= form_for @user do |form| %>
+    <%= form.label "Password" %><br>
+    <%= form.password_field :password %><br>
+    <%= form.label "Repeat password" %><br>
+    <%= form.password_field :password_confirmation %><br>
+    <%= form.submit 'Change Password' %>
+    <%= form.submit "clear", :type => "reset" %>
+  <% end %>
 </div>

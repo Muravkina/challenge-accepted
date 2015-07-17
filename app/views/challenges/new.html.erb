@@ -1,4 +1,16 @@
+<header>
+  <%= link_to "Challenges", challenges_path %>
+  <%= link_to "Profile", current_user %>
+  <%= link_to "Log Out", signout_path %>
+</header>
 <h1>Create New Challenge</h1>
+ <% if @challenge.errors.any? %>
+    <ul class="form_errors">
+    <% @challenge.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
 <%= form_for [@user, @challenge] do |form| %>
   <%= render form %>
   <%= form.submit 'Create Challenge' %>

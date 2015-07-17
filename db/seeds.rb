@@ -7,6 +7,29 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require 'ffaker'
 
+User.create ([{
+      email: 'dashamuravjova@gmail.com',
+      username: "Muravkina",
+      password: 'password',
+      location: "Brooklyn",
+      gender: "female",
+      birth_date: 'Feb 10 1989',
+      phone_number: '347-777-0584',
+      first_name: "Dasha",
+      last_name: "Murauyova"
+    },
+    {
+      email: 'als@gmail.com',
+      username: "ALS association",
+      password: 'password',
+      location: "New York",
+      gender: "female",
+      birth_date: 'Feb 10 1970',
+      phone_number: '347-777-0584',
+      first_name: "ALS association"
+    }])
+
+
 10.times do
   User.create ({
       email: FFaker::Internet.email,
@@ -21,126 +44,15 @@ require 'ffaker'
     })
 end
 
-4.times do
-  Challenge.create({
-    creator_id: 1,
-    name: FFaker::BaconIpsum.word,
-    is_public: true,
-    is_proof_required: true,
-    location: FFaker::Address.city,
-    time_limit: 'one week',
-    proof_description: FFaker::HipsterIpsum.sentence,
-    description: FFaker::HipsterIpsum.paragraph
-  })
-end
-
-
-  Challenge.create([
-  {
+Challenge.create({
     creator_id: 2,
-    name: FFaker::BaconIpsum.word,
+    name: "Ice Bucket Challenge",
+    img_url: 'https://localtvwjw.files.wordpress.com/2014/08/icebucket.jpg?w=1200',
     is_public: true,
     is_proof_required: true,
-    location: FFaker::Address.city,
+    location: "All over the globe",
     time_limit: 'one week',
-    proof_description: FFaker::HipsterIpsum.sentence,
-    description: FFaker::HipsterIpsum.paragraph
-  },
-  {
-    creator_id: 1,
-    name: FFaker::BaconIpsum.word,
-    is_public: true,
-    is_proof_required: true,
-    location: FFaker::Address.city,
-    time_limit: 'one week',
-    proof_description: FFaker::HipsterIpsum.sentence,
-    description: FFaker::HipsterIpsum.paragraph
-  },
-  ])
-
-
-20.times do
-  Tag.create({
-    challenge_id: rand(1..2),
-    name: FFaker::Lorem.word
-    })
-end
-
-
-  AcceptedChallenge.create([
-  {
-    challenge_id: 1,
-    is_accomplished: true,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 2
-  },
-  {
-    challenge_id: 1,
-    is_accomplished: true,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 3
-  },
-  {
-    challenge_id: 1,
-    is_accomplished: false,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 5
-  },
-  {
-    challenge_id: 2,
-    is_accomplished: false,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 1
-  },
-  {
-    challenge_id: 2,
-    is_accomplished: true,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 4
-  },
-  {
-    challenge_id: 2,
-    is_accomplished: true,
-    remark: FFaker::BaconIpsum.phrase,
-    user_id: 6
-  }
-  ])
-
-
-  Proof.create([
-  {
-    accepted_challenge_id: 1,
-    proof_url: "http://gallery.photo.net/photo/2439912-lg.jpg"
-  },
-  {
-    accepted_challenge_id: 1,
-    proof_url: "http://www.hdwallpapersimages.com/wp-content/uploads/images/Child-Girl-with-Sunflowers-Images.jpg"
-  },
-  {
-    accepted_challenge_id: 2,
-    proof_url: "http://www.hdwallpapersimages.com/wp-content/uploads/images/201/Udaan-Colors-TV-Show-Images.jpg"
-  },
-  {
-    accepted_challenge_id: 2,
-    proof_url: "http://www.moviehdwallpapers.com/wp-content/uploads/2014/10/McGowanImages_ChristinaJordanEngagement_02.jpg"
-  },
-  {
-    accepted_challenge_id: 5,
-    proof_url: "http://i.dailymail.co.uk/i/pix/2015/01/06/2473100D00000578-2898639-Photographer_Andrey_Gudkov_snapped_the_images_on_the_plains_of_t-a-20_1420546215677.jpg"
-  },
-  {
-    accepted_challenge_id: 5,
-    proof_url: "http://www.menucool.com/slider/prod/image-slider-2.jpg"
-  },
-  {
-    accepted_challenge_id: 6,
-    proof_url: "http://data.hdwallpapers.im/creativity_water_spray_drops_flower_rose_desktop_images.jpg"
-  },
-  {
-    accepted_challenge_id: 6,
-    proof_url: "http://www.hdwallpapersimages.com/wp-content/uploads/images/Frozen-Logo-Symbol-HD-Images.jpg"
-  }
-  ])
-
-
+    proof_description: "Video",
+    description: "You'll want to prepare frozen water, liquid water, a bucket, and, of course, a courage. Before you dump the bucket of ice water over your head, make sure you're recording the challenge"
+  })
 

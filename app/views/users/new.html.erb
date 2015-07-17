@@ -1,5 +1,17 @@
+<header>
+  <a href="/challenges">Explore Challenges</a>
+  <%= link_to "Back", signout_path %>
+</header>
+
 <h1>Sign Up</h1>
-<%= form_for @user do |form| %>
+  <% if @user.errors.any? %>
+    <ul class="form_errors">
+    <% @user.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+  <%= form_for @user do |form| %>
 
   <%= form.label :username %><br>
   <%= form.text_field :username %><br>

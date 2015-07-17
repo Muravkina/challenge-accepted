@@ -1,5 +1,11 @@
 class User < ActiveRecord::Base
   has_secure_password
+  validates :email, presence: true, uniqueness: true
+  validates :password, presence: true,
+    if: Proc.new { |a| a.password_digest.nil? }
+  validates :password, confirmation: true,
+    if: Proc.new { |a| a.password_digest.nil? }
+  validates :email, format: /@/
   has_many :created_challenges, :class_name => 'Challenge', :foreign_key => 'creator_id'
   has_many :received_challenges, :class_name => 'Challenge', :foreign_key => 'challenger_id'
   has_many :accepted_challenges

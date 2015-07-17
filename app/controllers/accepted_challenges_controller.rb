@@ -1,13 +1,13 @@
 class AcceptedChallengesController < ApplicationController
+  before_action :authorize, except: [:show, :index]
+
   def show
     @accepted_challenge = AcceptedChallenge.find(params[:id])
-    binding.pry
     @challenge = @accepted_challenge.challenge
     @accepted_challenge.proofs.build if @accepted_challenge.proofs.length < 3
-
   end
+
   def create
-    binding.pry
     @accepted_challenge = AcceptedChallenge.new
     @accepted_challenge.user_id = params[:user_id]
     @accepted_challenge.challenge_id = params[:challenge_id]
@@ -23,7 +23,7 @@ class AcceptedChallengesController < ApplicationController
 
   def update
     @accepted_challenge = AcceptedChallenge.find(params[:id])
-    binding.pry
+
     @accepted_challenge.is_accomplished = true;
     if @accepted_challenge.update(accepted_challenge_params)
       redirect_to @accepted_challenge
@@ -40,6 +40,6 @@ class AcceptedChallengesController < ApplicationController
   end
 
   def accepted_challenge_params
-    params.require(:accepted_challenge).permit(:remark, proofs_attributes: [:proof_url, :id, :_destroy])
+    params.require(:accepted_challenge).permit(:remark, proofs_attributes: [:proof_url, :video, :photo, :id, :_destroy])
   end
 end

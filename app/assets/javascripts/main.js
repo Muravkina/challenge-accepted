@@ -10,6 +10,10 @@ $(document).ready(function(){
     'template': $('#user_edit')
   });
 
+  $(".change_password").avgrund({
+    'template': $("#change_password")
+  })
+
 // modal window for editting the accepted challenge
   $('.edit_accepted_challenge_button').avgrund({
     onLoad: function (element) {
@@ -57,4 +61,46 @@ $(document).ready(function(){
     }
    })
 
+   $(".proof_checkbox").change(function(){
+    if($(".proof_required").is(':visible')){
+      $(".proof_required").hide()
+    } else {
+      $(".proof_required").show()
+    }
+   })
+
+//Adding comments
+  $(".submit_comment").on("click", function(event){
+      event.preventDefault();
+     var userId = $(".user_challenge").data("currentUser");
+     var body = $("#comment").val()
+     var commentableType = $(".user_challenge").data("commentableType")
+     var challengeId = $(".user_challenge").data("challengeId");
+     var acceptedChallengeId = $(".user_challenge").data("acceptedChallenge")
+     var commentableId;
+      if(typeof challengeId !== 'undefined') {
+        commentableId = challengeId
+      } else {
+        commentableId = acceptedChallengeId
+      }
+     $.ajax({
+      url:'/comments',
+      type: 'POST',
+      data: {
+        user_id: userId,
+        body: body,
+        commentable_type: commentableType,
+        commentable_id: commentableId,
+
+      }
+    }).done(function(response){
+      console.log(response)
+      var comment = $("<p><span>"+ response.user + "</span> <span>" + response.comment + "</span></p>");
+      $(".comments").append(comment)
+      })
+
+  })
 })
+
+
+

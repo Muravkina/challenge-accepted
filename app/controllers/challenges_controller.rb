@@ -1,4 +1,6 @@
 class ChallengesController <ApplicationController
+  before_action :authorize, except: [:show, :index, :in_progress, :accomplished]
+
   def new
     @user = User.find(params[:user_id])
     @challenge = Challenge.new
@@ -52,7 +54,11 @@ class ChallengesController <ApplicationController
       if @user.accepted_challenges.find_by({challenge_id: params[:id]})
         @user_accepted_challenge = @user.accepted_challenges.find_by({challenge_id: params[:id]})
         @user_accomplished_challenge = (@user_accepted_challenge && @user_accepted_challenge.is_accomplished == true)
-        @user_accepted_challenge.proofs.build if @user_accepted_challenge.proofs.length < 3
+        if @challenge.proof_description == "Photo" || @challenge.proof_description == "Link"
+          @user_accepted_challenge.proofs.build if @user_accepted_challenge.proofs.length < 3
+        else
+          @user_accepted_challenge.proofs.build if @user_accepted_challenge.proofs.length < 1
+        end
     end
     end
   end
@@ -82,6 +88,7 @@ class ChallengesController <ApplicationController
     @user_challenges = @user.accepted_challenges.where('is_accomplished = true')
     render :accomplished
   end
+
 
 
 end

@@ -6,18 +6,21 @@
 
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <%= yield :head %>
 </head>
 <body>
-<div id="user-widget">
-  <% if current_user %>
-    Welcome <strong><%= current_user.first_name %></strong>!
-    <%= link_to "Sign out", signout_path, id: "sign_out" %>
 
-
-  <% end %>
-</div>
 
 <%= yield %>
 
+<!-- Facebook sharing -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=" + <%= ENV['FACEBOOK_APP_ID'] %>;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>

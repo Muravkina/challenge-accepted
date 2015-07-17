@@ -1,17 +1,38 @@
+<header>
+  <% if current_user %>
+    <%= link_to "Challenges", challenges_path %>
+    <%= link_to "Profile", current_user %>
+    <%= link_to "Log Out", signout_path %>
+  <% else %>
+    <%= link_to "Home", root_path %>
+  <% end %>
+</header>
 <img src="<%= @challenge.img_url %>" height= "100px" width="60%">
-<h1><%= @challenge.name %></h1>
+<h1><%= link_to @challenge.name, @challenge %></h1>
 <p>Accomplished by: <%= "#{@accepted_challenge.user.first_name} #{@accepted_challenge.user.last_name}" %> on <%= @accepted_challenge.created_at %></p>
 <p>Comments: <%= @accepted_challenge.remark %></p>
 <p>Proof:
   <% @accepted_challenge.proofs.each do |proof| %>
-    <img src="<%= proof.proof_url %>"/>
+    <% if @accepted_challenge.challenge.proof_description == "Photo" && !proof.id.nil?%>
+      <img src="<%= proof.proof_url %>"/>
+      <% if !proof.photo_file_name.nil? %>
+        <%= image_tag proof.photo.url(:square) %>
+      <% end %>
+    <% elsif @accepted_challenge.challenge.proof_description == "Video" && !proof.id.nil?%>
+      <% if proof.proof_url.include? "youtube" %>
+      <iframe width="420" height="315" src="<%= proof.proof_url %>" frameborder="0" allowfullscreen></iframe>
+      <% elsif proof.proof_url.include? "youtu" %>
+      <%binding.pry %>
+      <iframe width="420" height="315" src="<%= "http://www.youtube.com/embed/" + proof.proof_url.split('/').last %>" frameborder="0" allowfullscreen></iframe>
+      <% elsif !proof.video_file_name.nil? %>
+        <%= video_tag proof.video.url, controls: true %>
+      <% else %>
+      <%= video_tag proof.proof_url, controls: true   %>
+      <% end %>
+    <% end %>
   <% end %>
 </p>
 
-  <button class="edit_accepted_challenge_button"> Edit </button>
-  <%= form_tag(accepted_challenge_path, method: :delete) do %>
-  <%= submit_tag 'Delete Challenge' %>
-  <% end %>
 
 <div id="accepted_challenge_edit" style="display: none;">
   <h1>Edit Challenge</h1>
@@ -29,3 +50,15 @@
     <%= form.submit "clear", :type => "reset" %>
   <% end %>
 </div>
+
+<% if current_user %>
+  <% if current_user == @accepted_challenge.user %>
+    <button class="edit_accepted_challenge_button"> Edit </button>
+    <%= form_tag(accepted_challenge_path, method: :delete) do %>
+    <%= submit_tag 'Delete Challenge' %>
+    <% end %>
+  <% end %>
+  <%= content_tag :div, class: 'user_challenge', data:{ accepted_challenge: @accepted_challenge.id, current_user: current_user.id, commentable_type: "AcceptedChallenge" } do %>
+      <% end %>
+  <%= render '/challenges/comments' %>
+<% end %>

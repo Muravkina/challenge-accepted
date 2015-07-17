@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716133558) do
+ActiveRecord::Schema.define(version: 20150717123317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,9 +44,7 @@ ActiveRecord::Schema.define(version: 20150716133558) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "challenge_id"
-    t.integer  "accomplished_chellenge_id"
-    t.text     "comment"
+    t.text     "body"
     t.integer  "commentable_id"
     t.string   "commentable_type"
     t.datetime "created_at"
@@ -56,8 +54,16 @@ ActiveRecord::Schema.define(version: 20150716133558) do
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
   create_table "proofs", force: :cascade do |t|
-    t.string  "proof_url"
-    t.integer "accepted_challenge_id"
+    t.string   "proof_url"
+    t.integer  "accepted_challenge_id"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.string   "video_file_name"
+    t.string   "video_content_type"
+    t.integer  "video_file_size"
+    t.datetime "video_updated_at"
   end
 
   create_table "tags", force: :cascade do |t|
