@@ -1,64 +1,101 @@
-<header>
-  <% if current_user %>
-    <%= link_to "Challenges", challenges_path %>
-    <%= link_to "Profile", current_user %>
-    <%= link_to "Log Out", signout_path %>
-  <% else %>
-    <%= link_to "Home", root_path %>
-  <% end %>
-</header>
-<img src="<%= @challenge.img_url %>" height= "100px" width="60%">
-<h1><%= link_to @challenge.name, @challenge %></h1>
-<p>Accomplished by: <%= "#{@accepted_challenge.user.first_name} #{@accepted_challenge.user.last_name}" %> on <%= @accepted_challenge.created_at %></p>
-<p>Comments: <%= @accepted_challenge.remark %></p>
-<p>Proof:
-  <% @accepted_challenge.proofs.each do |proof| %>
-    <% if @accepted_challenge.challenge.proof_description == "Photo" && !proof.id.nil?%>
-      <img src="<%= proof.proof_url %>"/>
-      <% if !proof.photo_file_name.nil? %>
-        <%= image_tag proof.photo.url(:square) %>
-      <% end %>
-    <% elsif @accepted_challenge.challenge.proof_description == "Video" && !proof.id.nil?%>
-      <% if proof.proof_url.include? "youtube" %>
-      <iframe width="420" height="315" src="<%= proof.proof_url %>" frameborder="0" allowfullscreen></iframe>
-      <% elsif proof.proof_url.include? "youtu" %>
-      <%binding.pry %>
-      <iframe width="420" height="315" src="<%= "http://www.youtube.com/embed/" + proof.proof_url.split('/').last %>" frameborder="0" allowfullscreen></iframe>
-      <% elsif !proof.video_file_name.nil? %>
-        <%= video_tag proof.video.url, controls: true %>
-      <% else %>
-      <%= video_tag proof.proof_url, controls: true   %>
-      <% end %>
-    <% end %>
-  <% end %>
-</p>
 
+<header>
+  <div class="row">
+
+    <%= image_tag "logo.png", class: "logo" %>
+
+    <% if current_user %>
+      <div class="nav">
+        <%= link_to "Profile", current_user, class: "button" %>
+        <%= link_to "Challenges", challenges_path, class: "button" %>
+        <%= link_to "Log Out", signout_path, class: "button"%>
+      </div>
+    <% else %>
+      <div class="nav">
+        <%= link_to "Home", root_path, class: "button" %>
+      </div>
+    <% end %>
+  </div>
+</header>
+
+<div class="container show_challenge">
+  <img src="<%= @challenge.img_url %>" height= "100px" width="60%">
+  <h1><%= link_to @challenge.name, @challenge %></h1>
+  <div class="challenge_description">
+    <p>Accomplished by: <%= "#{@accepted_challenge.user.first_name} #{@accepted_challenge.user.last_name}" %> on <%= @accepted_challenge.updated_at %></p>
+    <p>Comments: <%= @accepted_challenge.remark %></p>
+      <% @accepted_challenge.proofs.each do |proof| %>
+        <% if @accepted_challenge.challenge.proof_description == "Photo" && !proof.id.nil?%>
+          <img src="<%= proof.proof_url %>"/>
+          <% if !proof.photo_file_name.nil? %>
+            <%= image_tag proof.photo.url(:square) %>
+          <% end %>
+        <% elsif @accepted_challenge.challenge.proof_description == "Video" && !proof.id.nil?%>
+          <% if proof.proof_url.include? "youtube" %>
+          <iframe width="420" height="315" src="<%= proof.proof_url %>" frameborder="0" allowfullscreen></iframe>
+          <% elsif proof.proof_url.include? "youtu" %>
+          <iframe width="420" height="315" src="<%= "http://www.youtube.com/embed/" + proof.proof_url.split('/').last %>" frameborder="0" allowfullscreen></iframe>
+          <% elsif !proof.video_file_name.nil? %>
+            <%= video_tag proof.video.url, controls: true %>
+          <% else %>
+          <%= video_tag proof.proof_url, controls: true   %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+  </div>
 
 <div id="accepted_challenge_edit" style="display: none;">
-  <h1>Edit Challenge</h1>
-  <%= form_for @accepted_challenge do |form| %>
-    <%= form.label 'Provide Proof' %>
-    <%= form.fields_for :proofs do |proof| %>
-      <%= proof.text_field :proof_url %>
-      <%= proof.check_box '_destroy' %>
-      <% proof.index %>
-
-      <% end %>
-    <%= form.label 'Leave comment:' %>
-    <%= form.text_field :remark %>
-    <%= form.submit 'Edit Challenge' %>
-    <%= form.submit "clear", :type => "reset" %>
-  <% end %>
-</div>
-
-<% if current_user %>
-  <% if current_user == @accepted_challenge.user %>
-    <button class="edit_accepted_challenge_button"> Edit </button>
-    <%= form_tag(accepted_challenge_path, method: :delete) do %>
-    <%= submit_tag 'Delete Challenge' %>
+  <h1>Edit</h1>
+  <%= form_for @accepted_challenge, :html => { :multipart => true } do |form| %>
+    <% if @challenge.is_proof_required == true %>
+        <%= form.label 'The author requested a proof that you accomplished the challenge' %>
+      <%= form.fields_for :proofs do |proof| %> <br>
+        <% if @challenge.proof_description == "Photo" %>
+          <div class="field">
+            <%= proof.label 'Enter image URL' %>
+            <%= proof.text_field :proof_url, placeholder: "Image URL", class: "url" %><br>
+          </div>
+          <div class="field">
+            <%= proof.label 'Upload image' %>
+            <span class="upload"><%= proof.file_field :photo %></span><br>
+          </div>
+        <% elsif @challenge.proof_description == "Video" %>
+          <div class="field">
+            <%= proof.label 'Enter video URL' %>
+            <%= proof.text_field :proof_url, placeholder: "Video URL", class: "url" %><br>
+          </div>
+          <div class="field">
+            <%= proof.label 'Upload video' %>
+            <span class="upload"><%= proof.file_field :video %></span><br>
+          </div>
+        <% end %>
+        <% proof.index %>
+        <% end %>
     <% end %>
+    <div class="field">
+      <%= form.label 'Leave comment:' %>
+      <%= form.text_field :remark %><br>
+    </div>
+    <div class="buttons">
+      <%= form.submit 'Edit It' %>
+      <%= form.submit "clear", :type => "reset" %>
+    </div>
   <% end %>
-  <%= content_tag :div, class: 'user_challenge', data:{ accepted_challenge: @accepted_challenge.id, current_user: current_user.id, commentable_type: "AcceptedChallenge" } do %>
+  </div>
+
+
+  <% if current_user %>
+    <% if current_user == @accepted_challenge.user %>
+      <div class="show_buttons accepted_challenge">
+      <button class="edit_accepted_challenge_button"> Edit </button>
+      <%= form_tag(accepted_challenge_path, method: :delete) do %>
+      <%= submit_tag 'Delete Challenge' %>
+      </div>
       <% end %>
+    <% end %>
+    <%= content_tag :div, class: 'user_challenge', data:{ accepted_challenge: @accepted_challenge.id, current_user: current_user.id, commentable_type: "AcceptedChallenge" } do %>
+        <% end %>
+</div>
   <%= render '/challenges/comments' %>
 <% end %>

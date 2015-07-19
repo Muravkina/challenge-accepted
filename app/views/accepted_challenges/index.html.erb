@@ -1,24 +1,63 @@
 <header>
-  <% if current_user %>
-    <%= link_to "Profile", current_user %>
-    <%= link_to "Log Out", signout_path %>
-  <% else %>
-    <%= link_to "Home", root_path %>
-  <% end %>
-</header>
+  <div class="row">
 
-<img src="<%= @challenge.img_url%>" width= "60%" height= "100px">
-<h1><%= @challenge.name %></h1>
-<% if @challenge.is_public %>
-  <p> Public </p>
-<% else %>
-  <p> Private </p>
-<% end %>
-<%= link_to 'Description', @challenge %>
-<%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge) %>
-<% @accomplished_challenges.each do | accomplished | %>
-  <h1><a href="/users/<%= accomplished.user.id %>"><%= "#{accomplished.user.first_name} #{accomplished.user.last_name}" %></a> - <span><a href="challenges/<%=accomplished.challenge.id %>>"><%= accomplished.challenge.name %></a></span></h1>
-  <img src="<%= accomplished.proofs[0].proof_url %>">
-  <%= accomplished.remark %>
-<% end %>
+    <%= image_tag "logo.png", class: "logo" %>
+
+    <% if current_user %>
+      <div class="nav">
+        <%= link_to "Profile", current_user, class: "button" %>
+        <%= link_to "Challenges", challenges_path, class: "button" %>
+        <%= link_to "Log Out", signout_path, class: "button"%>
+      </div>
+    <% else %>
+      <div class="nav">
+        <%= link_to "Home", root_path, class: "button" %>
+      </div>
+    <% end %>
+  </div>
+</header>
+<div class="container show_challenge">
+  <img src="<%= @challenge.img_url%>" width= "60%" height= "100px">
+  <h1><%= @challenge.name %></h1>
+  <% if @challenge.is_public %>
+    <p class="public"> Public </p>
+  <% else %>
+    <p class="public"> Private </p>
+  <% end %>
+  <div class="show_buttons">
+    <%= link_to 'Description', @challenge, class: "button" %>
+    <%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge), class: "button" %>
+  </div>
+
+  <% @accomplished_challenges.each do | accomplished | %>
+    <div class="row challenges">
+      <div class="three columns">
+         <a href="/accepted_challenges/<%=accomplished.id %>"><%= accomplished.challenge.name %></a></span>
+          <div class="video_small">
+        <% if accomplished.challenge.proof_description == "Photo" && !accomplished.proofs[0].id.nil?%>
+          <% if !accomplished.proofs[0].photo_file_name.nil? %>
+            <%= image_tag accomplished.proofs[0].photo.url(:square) %>
+          <% else %>
+            <img src="<%= accomplished.proofs[0].proof_url %>"/>
+          <% end %>
+        <% elsif accomplished.challenge.proof_description == "Video" && !accomplished.proofs[0].id.nil?%>
+            <% if accomplished.proofs[0].proof_url.include? "youtube" %>
+              <iframe width="420" height="315" src="<%= accomplished.proofs[0].proof_url %>" frameborder="0" allowfullscreen></iframe>
+            <% elsif accomplished.proofs[0].proof_url.include? "youtu" %>
+              <iframe width="420" height="315" src="<%= "http://www.youtube.com/embed/" + accomplished.proofs[0].proof_url.split('/').last %>" frameborder="0" allowfullscreen></iframe>
+            <% elsif !accomplished.proofs[0].video_file_name.nil? %>
+              <%= video_tag accomplished.proofs[0].video.url %>
+            <% else %>
+              <%= video_tag accomplished.proofs[0].proof_url %>
+          </div>
+          <% end %>
+        <% end %>
+        <a href="/users/<%= accomplished.user.id %>" class="accomplished_author"><%= "#{accomplished.user.first_name} #{accomplished.user.last_name}" %></a>
+        <p><%= accomplished.remark %></p>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+
 

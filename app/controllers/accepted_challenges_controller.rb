@@ -4,7 +4,11 @@ class AcceptedChallengesController < ApplicationController
   def show
     @accepted_challenge = AcceptedChallenge.find(params[:id])
     @challenge = @accepted_challenge.challenge
-    @accepted_challenge.proofs.build if @accepted_challenge.proofs.length < 3
+    if @challenge.description == "Photo" && @challenge.description == "Link"
+      @accepted_challenge.proofs.build if @accepted_challenge.proofs.length < 3
+    else
+      @accepted_challenge.proofs.build if @accepted_challenge.proofs.length < 1
+    end
   end
 
   def create

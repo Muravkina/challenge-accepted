@@ -1,54 +1,63 @@
-<% if current_user == @user %>
-  <ul class="navigation">
-    <li><span>Profile</span>
-      <ul class="sub_navigation">
-        <li><%= link_to "Edit Profile", edit_user_path(@user), class: 'edit_profile_button' %></li>
-        <li><%= form_tag(user_path, method: :delete) do %>
-            <%= submit_tag 'Delete profile' %>
-            <% end %>
-        </li>
-      </ul>
-    </li>
-    <li><span>Challenges</span>
-      <ul class="sub_navigation">
-        <li><%= link_to 'All challenges', challenges_path %></li>
-        <li><%= link_to 'My challenges', user_challenges_path(@user) %></li>
-        <li><%= link_to 'Create Challenge', new_user_challenge_path(@user) %></li>
-      </ul>
-    </li>
-    <li><span><%= link_to "Logout", signout_path %></span></li>
-  </ul>
-<% else %>
-  <%= link_to 'User challenges', user_challenges_path(@user) %>
-<% end %>
-<div class="user_info">
-  <img src="<%= @user.img_url %>">
-  <p>Username: <%= @user.username %></p>
-  <p>Name: <%= "#{@user.first_name} #{@user.last_name}" %></p>
-  <p>Email: <%= @user.email %></p>
-  <p>Location: <%= @user.location %></p>
-  <p>Phone #: <%= @user.phone_number %></p>
-  <p>Gender: <%= @user.gender %></p>
-  <p>Birth Date: <%= @user.birth_date %></p>
-  <p>Participating since: <%= @user.created_at %></p>
-  <p>Created Challenges: <%= @user.created_challenges.count %></p>
-  <p>Accepted Challenges <%= @user.accepted_challenges.count %></p>
-  <p>Badges: </p>
-</div><!--user_info-->
-
-<div class="notification_board">
-  <% if !@received_challenges.empty? %>
-    <% @received_challenges.each do |challenge| %>
-     <% author = User.find(challenge.creator_id) %>
-    <p>You've been challenged by <%= "#{author.first_name} #{author.last_name}" %></p>
-    <p>Check it out: <%= link_to challenge.name, challenge %>, and don't forget to accept it!</p>
-    <hr>
-    <% end %>
+<header>
+  <%= image_tag "logo.png", class: "logo" %>
+  <% if current_user == @user %>
+    <ul class="navigation">
+      <li class="menu button"><span><%= link_to "Logout", signout_path, class: "log_out" %></span></li>
+      <li class="menu button"><span>Profile</span>
+        <ul class="sub_navigation">
+          <li><%= link_to "Edit Profile", edit_user_path(@user), class: 'edit_profile_button' %></li>
+          <li class="delete_profile"><%= form_tag(user_path, method: :delete) do %>
+              <%= submit_tag 'Delete profile', class:"delete_profile" %>
+              <% end %>
+          </li>
+        </ul>
+      </li>
+      <li class="menu button"><span>Challenges</span>
+        <ul class="sub_navigation">
+          <li><%= link_to 'All challenges', challenges_path %></li>
+          <li><%= link_to 'My challenges', user_challenges_path(@user) %></li>
+          <li><%= link_to 'Create Challenge', new_user_challenge_path(@user) %></li>
+        </ul>
+      </li>
+    </ul>
+  <% else %>
   <% end %>
-</div>
+</header>
+<div class="container">
+  <% if !@received_challenges.empty? && current_user == @user %>
+    <div class="notification_board">
+      <% @received_challenges.each do |challenge| %>
+       <% author = User.find(challenge.creator_id) %>
+      <p>You've been challenged by <%= "#{author.first_name} #{author.last_name}" %><br>
+      Check it out: <%= link_to challenge.name, challenge %>, and don't forget to accept it!</p>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="row user">
+    <div class="user_img three columns">
+      <img src="<%= @user.img_url %>"></br>
+      <%if current_user != @user %>
+        <%= link_to 'User challenges', user_challenges_path(@user), class: "button" %>
+      <% end %>
+    </div>
+    <div class="user_info seven columns">
+      <p><span >Username:</span> <%= @user.username %></p>
+      <p><span >Name:</span> <%= "#{@user.first_name} #{@user.last_name}" %></p>
+      <p><span >Email:</span> <%= @user.email %></p>
+      <p><span >Location:</span> <%= @user.location %></p>
+      <p><span>Phone #:</span> <%= @user.phone_number %></p>
+      <p><span>Gender:</span> <%= @user.gender %></p>
+      <p><span>Birth Date:</span> <%= @user.birth_date %></p>
+      <p><span>Created Challenges:</span> <%= @user.created_challenges.count %></p>
+      <p><span>Accepted Challenges:</span> <%= @user.accepted_challenges.count %></p>
+    </div>
+  </div><!--row user-->
+</div><!--container-->
 
+<!--user edit template -->
 <div id="user_edit" style="display: none;">
-  <h1>Edit Profile</h1>
+  <h1 class="edit_h1">Edit Profile</h1>
+  <button class="change_password">Change Password</button>
   <% if @user.errors.any? %>
       <ul class="form_errors">
       <% @user.errors.full_messages.each do |message| %>
@@ -56,36 +65,60 @@
       <% end %>
       </ul>
     <% end %>
-  <button class="change_password">Change Password</button>
   <%= form_for @user do |form| %>
-    <%= label_tag(:label, "First Name:") %>
-    <%= form.text_field :first_name %><br>
-    <%= label_tag :label, "Last Name:" %>
-    <%= form.text_field :last_name %><br>
-    <%= label_tag(:label, 'Username') %>
-    <%= form.text_field :username %><br>
-    <%= label_tag :label, "Email:" %>
-    <%= form.email_field :email %><br>
-    <%= label_tag(:label, 'Location') %>
-    <%= form.text_field :location %><br>
-    <%= label_tag(:label, 'Gender') %>
-    <%= form.select(:gender, options_for_select(['Male', 'Female'], selected: @user.gender ) ) %><br>
-    <%= label_tag(:label, 'Image') %>
-    <%= text_field_tag :img_url %><br>
-    <%= label_tag(:label, 'Phone Number') %>
-    <%= form.text_field :phone_number %><br>
+  <div class="one field">
+    <div class="field">
+      <%= label_tag(:label, "First Name:") %>
+      <%= form.text_field :first_name, class:"edit_first_name" %><br>
+    </div>
+    <div class="field">
+      <%= label_tag :label, "Last Name:" %>
+      <%= form.text_field :last_name , class: "edit_last_name"%><br>
+    </div>
+    <div class="field">
+      <%= label_tag(:label, 'Username') %>
+      <%= form.text_field :username, class: "edit_username" %><br>
+    </div>
+    <div class="field">
+      <%= label_tag :label, "Email:" %>
+      <%= form.email_field :email, class: "edit_email" %><br>
+    </div>
+  </div>
+  <div class="second field">
+    <div class="field">
+      <%= label_tag(:label, 'Location') %>
+      <%= form.text_field :location, class: "edit_location" %><br>
+    </div>
+    <div class="field">
+      <%= label_tag(:label, 'Gender') %>
+      <span class="edit_gender"><%= form.select(:gender, options_for_select(['Male', 'Female'], selected: @user.gender ) ) %></span><br>
+    </div>
+    <div class="field">
+      <%= label_tag(:label, 'Image') %>
+      <span class="edit_image"><%= text_field_tag :img_url %></span><br>
+    </div>
+    <div class="field">
+      <%= label_tag(:label, 'Phone #') %>
+      <%= form.text_field :phone_number, class: "edit_phone" %><br>
+    </div>
+  </div>
+  <div class="buttons">
     <%= form.submit "Clear", :type => "reset" %>
     <%= form.submit 'Edit', class: "submit_edit" %>
+  </div>
   <% end %>
-</div>
+
 
 <div id="change_password" style="display: none;">
-  <button class="edit_profile_button">Back</button>
+  <h1 class="edit_h1">Change Password</h1><br>
+  <button class="edit_profile_button back">Back</button>
   <%= form_for @user do |form| %>
-    <%= form.label "Password" %><br>
-    <%= form.password_field :password %><br>
-    <%= form.label "Repeat password" %><br>
-    <%= form.password_field :password_confirmation %><br>
+    <div class="change-password">
+      <%= form.label "Password" %><br>
+      <%= form.password_field :password %><br>
+      <%= form.label "Repeat password" %><br>
+      <%= form.password_field :password_confirmation %><br>
+    </div>
     <%= form.submit 'Change Password' %>
     <%= form.submit "clear", :type => "reset" %>
   <% end %>

@@ -1,56 +1,72 @@
-<div class="authorize">
-  <% if current_user %>
-    <%= link_to "Log Out", signout_path %>
-    <%= link_to "Profile", current_user %>
-  <% else %>
-    <button class="log_in">Log In</button>
-    <button class="sign_up_button">Sign Up</button>
-  <% end %>
-</div> <!--authorize-->
 
-<div class="introduction">
-  <img src="">
-  <h1>Challenge Accepted</h1>
-  <p>Bla bla bla, that's what this website is about</p>
-</div><!--introduction-->
+  <header>
+    <div class=" first_page">
+      <div class="row">
+        <div class="four columns authorize">
+            <% if current_user %>
+              <%= link_to "Log Out", signout_path, class: "button" %>
+              <%= link_to "Profile", current_user, class: "button" %>
+            <% else %>
+              <button class="log_in">Log In</button>
+              <button class="sign_up_button">Sign Up</button>
+            <% end %>
 
-<div class="site_explanation">
-  <h1>How It Works</h1>
-  <div class="create_challenge">
-    <img>
-    <p>Create Challenge</p>
-  </div><!--create challenge-->
-  <div class="share_challenge">
-    <img>
-    <p>Share Challenge</p>
-  </div><!--share challenge-->
-  <div class="accept_challenge">
-    <img>
-    <p>Accept Challenge</p>
-  </div><!--accept challenge-->
-  <div class="invite_others">
-    <img>
-    <p>Invite Others</p>
-  </div><!--invite others-->
-</div><!--site_explanation-->
-<%= link_to 'Explore Challenges', challenges_path %>
+        </div>
+      </div><!--row-->
+    </div>
+  </header>
 
-<div id="log_in" style="display:none;">
-<h1>Welcome</h1>
-<%= form_tag '/login' do %>
-  <%= label_tag(:label, "Email:") %>
-  <%= text_field_tag :email %><br>
-  <%= label_tag :label, "Password:" %>
-  <%= password_field_tag :password %><br>
-  <%= submit_tag "Log In" %>
-  <p>OR</p>
-  <%= link_to "Log in with Facebook", "/auth/facebook", id: "sign_in" %>
-<% end %>
-</div>
+  <div class="introduction container">
+    <div class="row">
+      <div class="four columns">
+        <img src="http://www.gettyimages.co.uk/gi-resources/images/Homepage/Category-Creative/UK/UK_Creative_462809583.jpg" width="200px" height="200px">
+      </div>
+      <div class="eight columns">
+        <h1>Challenge Accepted</h1>
+        <p>Bla bla bla, that's what this website is about</p>
+      </div>
+    </div><!--row-->
+  </div><!--introduction-->
+  <div class="container site_explanation">
+    <h1>How It Works</h1>
+    <div class="create_challenge three columns">
+      <img src="http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg">
+      <p>Create Challenge</p>
+    </div><!--create challenge-->
+    <div class="share_challenge three columns">
+      <img src="http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg">
+      <p>Share Challenge</p>
+    </div><!--share challenge-->
+    <div class="accept_challenge three columns">
+      <img src="http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg">
+      <p>Accept Challenge</p>
+    </div><!--accept challenge-->
+    <div class="invite_others three columns">
+      <img src="http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg">
+      <p>Invite Others</p>
+    </div><!--invite others-->
+  </div><!--site_explanation-->
 
-<div id="sign_up" style='display:none;'>
-  <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
-  <%= link_to 'Regular Sign Up', new_user_path %>
-</div>
+  <%= link_to 'Explore Challenges', challenges_path, class: "button button-primary first" %>
 
-<%= javascript_include_tag 'main' %>
+  <div id="log_in" style="display:none;">
+    <h1>Welcome</h1>
+    <div class = "log_in form">
+    <%= form_tag '/login' do %>
+      <%= label_tag(:label, "Email:") %>
+      <%= text_field_tag :email %><br>
+      <%= label_tag :label, "Password:" %>
+      <%= password_field_tag :password %><br>
+      <%= submit_tag "Log In" %>
+      <p><%= link_to "Log in with Facebook", "/auth/facebook", id: "sign_in", class: "button button-primary" %></p>
+    <% end %>
+      </div>
+  </div>
+
+  <div id="sign_up" style='display:none;'>
+    <%= link_to 'Regular Sign Up', new_user_path, class: "button button-primary" %>
+    <%= link_to "Sign Up with Facebook", "/auth/facebook", id: "sign_in", class: "button button-primary" %>
+  </div>
+
+  <%= javascript_include_tag 'main' %>
+

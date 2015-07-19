@@ -1,24 +1,41 @@
 <header>
-  <% if current_user %>
-    <%= link_to "Profile", current_user %>
-    <%= link_to "Log Out", signout_path %>
-  <% else %>
-    <%= link_to "Home", root_path %>
-  <% end %>
-</header>
+  <div class="row">
 
-<% if @user_challenges %>
+    <%= image_tag "logo.png", class: "logo" %>
 
-  <div class= "tabs">
-    <%= link_to 'Created', user_challenges_path(@user) %>
-    <a href="/users/<%= @user.id %>/challenges/in_progress">In progress</a>
-    <a href="/users/<%= @user.id %>/challenges/accomplished">Accomplished</a>
+    <% if current_user %>
+      <div class="nav">
+        <%= link_to "Profile", current_user, class: "button" %>
+        <%= link_to "Challenges", challenges_path, class: "button" %>
+        <%= link_to "Log Out", signout_path, class: "button"%>
+      </div>
+    <% else %>
+      <div class="nav">
+        <%= link_to "Home", root_path, class: "button" %>
+      </div>
+    <% end %>
   </div>
-
-  <% @user_challenges.each do |challenge| %>
-    <div><img src="<%= challenge.challenge.img_url %>"></div>
-    <h1><%= challenge.challenge.name %></h1>
-    <p><%= challenge.challenge.description %></p>
-
+</header>
+<div class="container index_challenges">
+  <% if @user_challenges %>
+    <h1>Accomplished Challenges</h1>
+    <div class= "user_challenge buttons">
+      <%= link_to 'Created', user_challenges_path(@user), class: "button" %>
+      <a href="/users/<%= @user.id %>/challenges/in_progress" class="button">In progress</a>
+      <a href="/users/<%= @user.id %>/challenges/accomplished" class="button">Accomplished</a>
+    </div>
+    <div class="spec_user_challenges">
+      <% @user_challenges.each do |challenge| %>
+        <div class="row challenges">
+          <div class="three columns">
+            <img src="<%= challenge.challenge.img_url %>">
+            <%= link_to challenge.challenge.name, challenge %>
+            <p><%= challenge.challenge.description %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-<% end %>
+</div>
+
+

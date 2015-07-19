@@ -29,7 +29,7 @@
 			holderClass: '',
 			overlayClass: '',
 			enableStackAnimation: false,
-			onBlurContainer: '',
+			onBlurContainer: '.body',
 			openOnEvent: true,
 			setEvent: 'click',
 			onLoad: false,

@@ -2,16 +2,21 @@ $(document).ready(function(){
 
 // modal window for logging in
   $('.log_in').avgrund({
-    'template': $("#log_in")
+    'template': $("#log_in"),
+      width: 380,
+      height: 300
   });
 
 // modal window for editting profile
   $('.edit_profile_button').avgrund({
-    'template': $('#user_edit')
+    'template': $('#user_edit'),
+      height: 350,
+      width: 640
   });
 
   $(".change_password").avgrund({
-    'template': $("#change_password")
+    'template': $("#change_password"),
+      height: 350,
   })
 
 // modal window for editting the accepted challenge
@@ -19,12 +24,15 @@ $(document).ready(function(){
     onLoad: function (element) {
         $('body').scrollTop(0)
     },
-    'template': $('#accepted_challenge_edit')
+    'template': $('#accepted_challenge_edit'),
+    width: 500,
+    height: 290
   });
 
 // modal window for signing up
   $('.sign_up_button').avgrund({
-    'template': $('#sign_up')
+    'template': $('#sign_up'),
+      height: 180
   })
 
 // AJAX to accepted_challenges#create - user accepts the challege
@@ -41,7 +49,7 @@ $(document).ready(function(){
     }).done(function(response){
       console.log(response)
       $('.accept_challenge_button').hide()
-      $('#accept_challenge_button').append("<p>Accepted</p>")
+      $('#accept_challenge_button').append("<p class='this_challenge_accomplishe'>Accepted</p>")
     })
    })
 
@@ -50,7 +58,9 @@ $(document).ready(function(){
     onLoad: function (element) {
         $('body').scrollTop(0)
     },
-    'template': $('#user_accomplished_challenge')
+    'template': $('#user_accomplished_challenge'),
+      width: 500,
+      height: 290
   })
 
    $(".checkbox").change(function(){

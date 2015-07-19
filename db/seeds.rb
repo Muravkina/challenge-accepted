@@ -56,3 +56,47 @@ Challenge.create({
     description: "You'll want to prepare frozen water, liquid water, a bucket, and, of course, a courage. Before you dump the bucket of ice water over your head, make sure you're recording the challenge"
   })
 
+2.times do
+  Challenge.create({
+    creator_id: 3,
+    name: FFaker::BaconIpsum.word,
+    is_public: true,
+    is_proof_required: true,
+    location: FFaker::Address.city,
+    time_limit: 'one week',
+    proof_description: "Video",
+    description: FFaker::HipsterIpsum.paragraph
+  })
+end
+
+
+  Challenge.create([
+  {
+    creator_id: 4,
+    name: FFaker::BaconIpsum.word,
+    is_public: true,
+    is_proof_required: true,
+    location: FFaker::Address.city,
+    time_limit: 'one week',
+    proof_description: "Photo",
+    description: FFaker::HipsterIpsum.paragraph
+  },
+  {
+    creator_id: 3,
+    name: FFaker::BaconIpsum.word,
+    is_public: true,
+    is_proof_required: true,
+    location: FFaker::Address.city,
+    time_limit: 'one week',
+    proof_description: "Video",
+    description: FFaker::HipsterIpsum.paragraph
+  },
+])
+
+
+20.times do
+  Tag.create({
+    challenge_id: rand(2..2),
+    name: FFaker::Lorem.word
+    })
+end

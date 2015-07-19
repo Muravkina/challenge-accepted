@@ -1,11 +1,23 @@
 <header>
-  <%= link_to "Challenges", challenges_path %>
-  <%= link_to "Profile", current_user %>
-  <%= link_to "Log Out", signout_path %>
+  <div class="row">
+    <%= image_tag "logo.png", class: "logo" %>
+    <div class="nav">
+      <%= link_to "Profile", current_user, class: "button" %>
+      <%= link_to "Challenges", challenges_path, class: "button" %>
+      <%= link_to "Log Out", signout_path, class: "button" %>
+    </div>
+  </div>
 </header>
-<h1>Edit Challenge</h1>
-<%= form_for [@user, @challenge] do |form| %>
-  <%= render form %>
-  <%= form.submit 'Edit Challenge' %>
-  <%= form.submit "clear", :type => "reset" %>
-<% end %>
+<div class="container">
+  <div class="sign_up form">
+    <h1>Edit Challenge</h1>
+    <%= form_for [@user, @challenge] do |form| %>
+      <%= render form %>
+      <div class="buttons challenge">
+        <%= form.submit 'Edit Challenge', class:"button" %>
+        <%= form.submit "clear", :type => "reset", class: "button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

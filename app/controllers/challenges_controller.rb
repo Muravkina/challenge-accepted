@@ -7,26 +7,16 @@ class ChallengesController <ApplicationController
   end
 
   def create
-    @challenge = Challenge.new
-    @challenge.name = params['challenge']['name']
-    @challenge.description = params['challenge']['description']
-    @challenge.location = params['challenge']['location']
-    @challenge.img_url = params['challenge']['img_url']
-    @challenge.time_limit = params['challenge']['time_limit']
-    @challenge.is_proof_required = params['challenge']['is_proof_required']
-    @challenge.proof_description = params['challenge']['proof_description']
-    @challenge.sample_url = params['challenge']['sample_url']
-    @challenge.is_public = params['challenge']['is_public']
-    @challenge.challenger_email = params['challenge']['challenger_email']
+    @challenge = Challenge.new(challenge_params)
     @challenge.creator_id = current_user.id
     @creator = User.find(@challenge.creator_id)
     if @challenge.save
-      if params['challenge']['tags'] != "" && params['challenge']['tags'] != nil
-        tags = @challenge.tags.tr(',', '').tr('#','').split()
+      if params['tags'] != "" && params['tags'] != nil
+        tags = params['tags'].tr(',', '').tr('#','').split()
         tags.each do |tag|
           @tag = Tag.new
           @tag.name = tag
-          @tag.challenge_id = @chalenge.id
+          @tag.challenge_id = @challenge.id
           @tag.save
         end
       end
@@ -69,24 +59,69 @@ class ChallengesController <ApplicationController
   end
 
   def index
-    if params[:user_id]
+    if !params[:user_id].nil?
       @user = User.find(params[:user_id])
-      @user_created_challenges = @user.created_challenges
+      if current_user == @user
+        @user_created_challenges = @user.created_challenges
+      else
+        @user_created_challenges = @user.created_challenges.where('is_public = true')
+      end
     else
-      @challenges = Challenge.all
+      @challenges = Challenge.all.where('is_public = true')
+
     end
   end
 
   def in_progress
     @user = User.find(params[:user_id])
-    @user_challenges = @user.accepted_challenges.where('is_accomplished = false')
+    if current_user == @user
+      @user_challenges = @user.accepted_challenges.where('is_accomplished = false')
+    else
+      user_challenges = @user.accepted_challenges.joins(:challenge).where("challenges.is_public = true")
+      @user_challenges = user_challenges.where('is_accomplished = false')
+    end
     render :in_progress
   end
 
   def accomplished
     @user = User.find(params[:user_id])
-    @user_challenges = @user.accepted_challenges.where('is_accomplished = true')
+    if current_user == @user
+      @user_challenges = @user.accepted_challenges.where('is_accomplished = true')
+    else
+      user_challenges = @user.accepted_challenges.joins(:challenge).where("challenges.is_public = true")
+      @user_challenges = user_challenges.where('is_accomplished = true')
+    end
     render :accomplished
+  end
+
+  def update
+    @challenge = Challenge.find(params[:id])
+    if @challenge.update(challenge_params)
+      if params['tags'] != "" && params['tags'] != nil
+        tags = params['tags'].tr(',', '').tr('#','').split()
+        tags.each do |tag|
+          unless Tag.find_by(:name => tag)
+          @tag = Tag.new
+          @tag.name = tag
+          @tag.challenge_id = @challenge.id
+          @tag.save
+        end
+        end
+      end
+      redirect_to "/challenges/#{@challenge.id}"
+    else
+      render :new
+    end
+  end
+
+  def destroy
+    @challenge = Challenge.find(params[:id])
+    @challenge.destroy
+    redirect_to '/challenges'
+  end
+
+def challenge_params
+    params.require(:challenge).permit!
   end
 
 

@@ -1,37 +1,55 @@
 <header>
-  <a href="/challenges">Explore Challenges</a>
-  <%= link_to "Back", signout_path %>
+  <div class="row">
+    <%= image_tag "logo.png", class: "logo" %>
+    <div class="nav">
+      <a href="/challenges" class="button">Explore Challenges</a>
+      <%= link_to "Back", signout_path, class: "button" %>
+    </div>
+  </div>
 </header>
-
-<h1>Sign Up</h1>
-  <% if @user.errors.any? %>
-    <ul class="form_errors">
-    <% @user.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
+<div class="container">
+  <div class="sign_up form">
+  <h1>Sign Up</h1>
+    <% if @user.errors.any? %>
+      <ul class="form_errors">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
     <% end %>
-    </ul>
+    <%= form_for @user do |form| %>
+
+    <%= form.label :username %>
+    <%= form.text_field :username, class: "username" %><br>
+
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name, class: "first_name" %><br>
+
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, class: "last_name" %><br>
+
+    <%= form.label :email %>
+    <%= form.text_field :email, class: "email" %><br>
+
+    <%= form.label "Password" %>
+    <%= form.password_field :password, class: "password" %><br>
+
+    <%= form.label "Repeat password" %>
+    <%= form.password_field :password_confirmation, class: "repeat_password" %><br>
+    <div class="buttons">
+      <%= form.submit 'Sign Up', class: "button" %>
+      <%= form.submit "clear", :type => "reset", class: "button" %>
+    </div>
   <% end %>
-  <%= form_for @user do |form| %>
-
-  <%= form.label :username %><br>
-  <%= form.text_field :username %><br>
-
-  <%= form.label :first_name %><br>
-  <%= form.text_field :first_name %><br>
-
-  <%= form.label :last_name %><br>
-  <%= form.text_field :last_name %><br>
-
-  <%= form.label :email %><br>
-  <%= form.text_field :email %><br>
-
-  <%= form.label "Password" %><br>
-  <%= form.password_field :password %><br>
-
-  <%= form.label "Repeat password" %><br>
-  <%= form.password_field :password_confirmation %><br>
-
-  <%= form.submit 'Sign Up' %>
-  <%= form.submit "clear", :type => "reset" %>
-
-<% end %>
+  </div>
+</div>
+<header>
+  <div class="row">
+    <%= image_tag "logo.png", class: "logo" %>
+    <div class="nav">
+      <%= link_to "Challenges", challenges_path, class: "button" %>
+      <%= link_to "Profile", current_user, class: "button" %>
+      <%= link_to "Log Out", signout_path, class: "button" %>
+    </div>
+  </div>
+</header>

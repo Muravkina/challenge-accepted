@@ -40,6 +40,8 @@ class UsersController < ApplicationController
 
   def destroy
     user = User.find(params[:id])
+    Challenge.destroy_all(creator_id: user.id)
+    AcceptedChallenge.destroy_all(user_id: user.id)
     user.destroy
     session[:user_id] = nil
     redirect_to '/'

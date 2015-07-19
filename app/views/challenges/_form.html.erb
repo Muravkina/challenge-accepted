@@ -1,16 +1,24 @@
+<div class="edit_new_challenge">
 <%= form.label :name %>
-<%= form.text_field :name %> <br>
-<%= form.label :description %>
-<%= form.text_field :description %> <br>
+<%= form.text_field :name, class: "name" %>
+<p>
+<%= form.label :description, class: "description_label" %>
+<%= form.text_area :description, class: "description", :size => "40X15" %> <br>
+</p>
 <%= form.label :location %>
-<%= form.text_field :location %> <br>
+<%= form.text_field :location, class: "location" %> <br>
 <%= form.label 'Image' %>
-<%= text_field_tag :img_url %> <br>
+<span class="image"><%= form.text_field :img_url %></span><br>
 <%= form.label 'Time Limit' %>
-<%= form.select(:time_limit, options_for_select(['Day', 'Week', 'Month'], selected: @challenge.time_limit )) %> <br>
-<%= form.label 'Proof' %>
+<span class="time_limit"><%= form.select(:time_limit, options_for_select(['Day', 'Week', 'Month'], selected: @challenge.time_limit )) %> </span><br>
+<%= form.label 'Is proof required' %>
 <%= form.check_box :is_proof_required, class: "proof_checkbox" %><br>
-<div class="proof_required" style="display: none">
+
+  <% if @challenge.is_proof_required == true %>
+  <div class="proof_required">
+  <% else %>
+  <div class="proof_required" style="display: none">
+  <% end %>
   <p>Please, specify what kind of proof is required. </br>
   <%= form.radio_button :proof_description, "Video" %>Video (1)
   <%= form.radio_button :proof_description, "Image" %>Images (up to 3)
@@ -18,10 +26,15 @@
 </div>
   <%= form.label 'Is it public?' %>
 <%= form.check_box :is_public, class: 'checkbox' %><br>
-<div class= "private_section" >
-  <%= form.label 'Challenger email' %>
-  <%= form.text_field :challenger_email %><br>
+
+<% if @challenge.is_public != true %>
+  <div class="private_section">
+  <% else %>
+  <div class="private_section" style="display: none">
+  <% end %>
+  <%= form.label 'User email' %>
+  <%= form.text_field :challenger_email, class: "user_email" %><br>
 </div>
 <%= form.label 'Tags' %>
-<%= text_field_tag :tags %> <br>
-
+<pan class="tags"><%= text_field_tag :tags %></pan> <br>
+</div>

@@ -3,17 +3,22 @@
 <head>
   <title>ChallengeAccepted</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
-
+  <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Allan:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <%= yield :head %>
 </head>
 <body>
 
-
-<%= yield %>
-
-<!-- Facebook sharing -->
+<div class="body">
+  <%= yield %>
+<footer>
+  <div class="row">
+    <p>&copy; Muravkina 2015</p>
+  </div>
+</footer>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -22,5 +27,7 @@
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=" + <%= ENV['FACEBOOK_APP_ID'] %>;
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+</div>
+<!-- Facebook sharing -->
 </body>
 </html>

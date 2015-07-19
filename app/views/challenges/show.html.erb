@@ -9,91 +9,127 @@
 <% end %>
 
 <header>
-  <%= link_to "Home", root_path %>
-  <% if current_user %>
-    <%= link_to "Profile", current_user %>
-    <%= link_to "Log Out", signout_path %>
-  <% end %>
+  <div class="row">
+
+    <%= image_tag "logo.png", class: "logo" %>
+
+    <% if current_user %>
+      <div class="nav">
+        <%= link_to "Profile", current_user, class: "button" %>
+        <%= link_to "Challenges", challenges_path, class: "button" %>
+        <%= link_to "Log Out", signout_path, class: "button"%>
+      </div>
+    <% else %>
+      <div class="nav">
+        <%= link_to "Home", root_path, class: "button" %>
+      </div>
+    <% end %>
+  </div>
 </header>
 
-<img src="<%= @challenge.img_url%>" width= "60%" height= "100px">
-<h1><%= @challenge.name %></h1>
-<% if @challenge.is_public %>
-  <p> Public </p>
-<% else %>
-  <p> Private </p>
-<% end %>
-<%= link_to 'Description', @challenge %>
-<%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge) %>
 
-<p>Author: <%= "#{@author.first_name} #{@author.last_name}" %></p>
-<% if @challenger %>
-  <p>Challenger: <%= "#{@challenger.first_name} #{@challenger.last_name}" %></p>
-<% end %>
-
-<p>Location: <%= @challenge.location %></p>
-<p>Time limit: <%= @challenge.time_limit %></p>
-<p>Proof:
-  <% if @challenge.is_proof_required %>
-    <%= @challenge.proof_description %>
+<div class="container show_challenge">
+  <img src="<%= @challenge.img_url%>">
+  <h1><%= @challenge.name %></h1>
+  <% if @challenge.is_public %>
+    <p class="public"> Public </p>
   <% else %>
-    <span>NOT REQUIRED </span>
+    <p class="public"> Private </p>
   <% end %>
-</p>
-
-<p>Tags: <% @tags.each do |tag| %>
-    <span><%= tag.name %></span>
-  <% end %>
-</p>
-
-<% if current_user == @challenge.creator %>
-  <%= link_to 'Edit Challenge', edit_user_challenge_path(@author, @challenge) %>
-  <%= form_tag(challenge_path, method: :delete) do %>
-    <%= submit_tag 'Delete Challenge' %>
-  <% end %>
-<% end %>
-
-<% if @user_accomplished_challenge %>
-    <p>Done</p>
-<% elsif @user_accepted_challenge %>
-  <button class= "this_challenge_accomplished">Done</button>
+  <div class="show_buttons">
+    <%= link_to 'Description', @challenge, class: "button" %>
+    <%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge), class: "button" %>
+  </div>
+  <% if @user_accomplished_challenge %>
+      <p class="this_challenge_accomplishe">Done</p>
+  <% elsif @user_accepted_challenge %>
+    <button class= "this_challenge_accomplished button button-primary">Done</button>
 <!-- Form template -->
   <div id="user_accomplished_challenge" style="display: none;">
   <h1>Well Done</h1>
   <%= form_for @user_accepted_challenge, :html => { :multipart => true } do |form| %>
     <% if @challenge.is_proof_required == true %>
-      <%= form.label 'The author requested a proof that you accomplished the challenge' %>
+        <%= form.label 'The author requested a proof that you accomplished the challenge' %>
       <%= form.fields_for :proofs do |proof| %> <br>
         <% if @challenge.proof_description == "Photo" %>
-          <%= proof.label 'Enter image URL' %>
-          <%= proof.text_field :proof_url, placeholder: "Image URL" %><br>
-          <%= proof.label 'Upload image' %>
-          <%= proof.file_field :photo %><br>
+          <div class="field">
+            <%= proof.label 'Enter image URL' %>
+            <%= proof.text_field :proof_url, placeholder: "Image URL", class: "url" %><br>
+          </div>
+          <div class="field">
+            <%= proof.label 'Upload image' %>
+            <span class="upload"><%= proof.file_field :photo %></span><br>
+          </div>
         <% elsif @challenge.proof_description == "Video" %>
-          <%= proof.label 'Enter video URL' %>
-          <%= proof.text_field :proof_url, placeholder: "Video URL" %><br>
-          <%= proof.label 'Upload video' %>
-          <%= proof.file_field :video %><br>
+          <div class="field">
+            <%= proof.label 'Enter video URL' %>
+            <%= proof.text_field :proof_url, placeholder: "Video URL", class: "url" %><br>
+          </div>
+          <div class="field">
+            <%= proof.label 'Upload video' %>
+            <span class="upload"><%= proof.file_field :video %></span><br>
+          </div>
         <% end %>
         <% proof.index %>
         <% end %>
     <% end %>
-    <%= form.label 'Leave comment:' %>
-    <%= form.text_field :remark %><br>
-    <%= form.submit 'Finish It' %>
-    <%= form.submit "clear", :type => "reset" %>
+    <div class="field">
+      <%= form.label 'Leave comment:' %>
+      <%= form.text_field :remark %><br>
+    </div>
+    <div class="buttons">
+      <%= form.submit 'Finish It' %>
+      <%= form.submit "clear", :type => "reset" %>
+    </div>
   <% end %>
-</div>
+  </div>
 
-<% elsif current_user %>
+<% elsif current_user != @challenge.creator && current_user%>
   <div id="accept_challenge_button">
-    <button class="accept_challenge_button">Accept Challenge</button>
+    <div class="show_buttons">
+      <button class="accept_challenge_button button button-primary">Accept Challenge</button>
+    </div>
   </div>
 <% end %>
+  <div class="challenge_description">
+    <p><strong>Author:</strong> <%= "#{@author.first_name} #{@author.last_name}" %></p>
+    <% if @challenge.is_public != true %>
+      <% if @challenger %>
+        <p><strong>Challenger:</strong> <%= "#{@challenger.first_name} #{@challenger.last_name}" %></p>
+      <% else %>
+        <p><strong>Challenger:</strong> <%= @challenge.challenger_email %></p>
+      <% end %>
+    <% end %>
+
+    <p><strong>Location:</strong> <%= @challenge.location %></p>
+    <p><strong>Time limit:</strong> <%= @challenge.time_limit %></p>
+    <p><strong>Proof:</strong>
+      <% if @challenge.is_proof_required %>
+        <%= @challenge.proof_description %>
+      <% else %>
+        <span>NOT REQUIRED </span>
+      <% end %>
+    </p>
+    <p><strong>Description:</strong> <%= @challenge.description %></p>
+    <p><strong>Tags:</strong> <% @tags.each do |tag| %>
+        <span><%= tag.name %></span>
+      <% end %>
+    </p>
+  </div>
+
+  <% if current_user == @challenge.creator %>
+    <div class="show_buttons">
+      <%= form_tag(challenge_path, method: :delete) do %>
+        <%= link_to 'Edit Challenge', edit_user_challenge_path(@author, @challenge), class: "submit button" %>
+        <%= submit_tag 'Delete Challenge', class: "submit button" %>
+      <% end %>
+    </div>
+  <% end %>
+
 
 
 <div class="fb-share-button"  data-layout="button_count"></div>
-
+</div>
 <% if current_user %>
   <%= content_tag :div, class: 'user_challenge', data:{ user_id: @user.id, challenge_id: @challenge.id, current_user: current_user.id, commentable_type: "Challenge" } do %>
   <% end %>
