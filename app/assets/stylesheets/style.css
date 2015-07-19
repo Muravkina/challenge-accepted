@@ -134,19 +134,19 @@ header .row{
 .sign_up h1 {
   font-family: 'Finger Paint', cursive;
 }
-.log_in.form {
+.log_in_form {
   margin-left: 20px;
 }
-.log_in.form input[type="text"]{
+.log_in_form input[type="text"]{
   margin-left: 35px;
 }
-.log_in.form input[type="password"]{
+.log_in_form input[type="password"]{
   margin-left: 3px;
 }
-.log_in.form input {
+.log_in_form input {
   margin-bottom: 10px;
 }
-.log_in.form input[type="submit"] {
+.log_in_form input[type="submit"] {
   margin-top: 10px;
   margin-bottom: 15px
 }
