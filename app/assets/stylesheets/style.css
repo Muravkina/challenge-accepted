@@ -6,7 +6,7 @@ html, body{
   overflow: auto;
   background-image: white;
   background-size: cover;
-  background-image: url(sunset_sky_inside.jpg)
+  background-image: url(sunset_sky_inside.png)
 }
 .container {
   box-shadow: 0px 0px 5px 0px rgba(46,46,46,1);
