@@ -26,7 +26,7 @@ $(document).ready(function(){
     },
     'template': $('#accepted_challenge_edit'),
     width: 500,
-    height: 290
+    height: 310
   });
 
 // modal window for signing up

@@ -55,6 +55,8 @@
           <div class="field">
             <%= proof.label 'Enter image URL' %>
             <%= proof.text_field :proof_url, placeholder: "Image URL", class: "url" %><br>
+            <%= proof.label "Delete existing photos" %>
+            <%= proof.check_box '_destroy' %>
           </div>
           <div class="field">
             <%= proof.label 'Upload image' %>
@@ -64,6 +66,8 @@
           <div class="field">
             <%= proof.label 'Enter video URL' %>
             <%= proof.text_field :proof_url, placeholder: "Video URL", class: "url" %><br>
+            <%= proof.label "Delete existing video" %>
+            <%= proof.check_box '_destroy' %>
           </div>
           <div class="field">
             <%= proof.label 'Upload video' %>
