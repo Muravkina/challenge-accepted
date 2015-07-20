@@ -22,7 +22,7 @@
   <img src="<%= @challenge.img_url %>" height= "100px" width="60%">
   <h1><%= link_to @challenge.name, @challenge %></h1>
   <div class="challenge_description">
-    <p>Accomplished by: <%= "#{@accepted_challenge.user.first_name} #{@accepted_challenge.user.last_name}" %> on <%= @accepted_challenge.updated_at %></p>
+    <p>Accomplished by: <%= @accepted_challenge.user.username %> on <%= @accepted_challenge.updated_at %></p>
     <p>Comments: <%= @accepted_challenge.remark %></p>
       <% @accepted_challenge.proofs.each do |proof| %>
         <% if @accepted_challenge.challenge.proof_description == "Photo" && !proof.id.nil?%>

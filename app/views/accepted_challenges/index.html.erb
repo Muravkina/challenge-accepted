@@ -52,7 +52,7 @@
           </div>
           <% end %>
         <% end %>
-        <a href="/users/<%= accomplished.user.id %>" class="accomplished_author"><%= "#{accomplished.user.first_name} #{accomplished.user.last_name}" %></a>
+        <a href="/users/<%= accomplished.user.id %>" class="accomplished_author"><%= accomplished.user.username %></a>
         <p><%= accomplished.remark %></p>
       </div>
     </div>
