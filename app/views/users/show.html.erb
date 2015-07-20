@@ -21,6 +21,11 @@
       </li>
     </ul>
   <% else %>
+    <div class="nav">
+      <%= link_to "Profile", current_user, class: "button" %>
+      <%= link_to "Challenges", challenges_path, class: "button" %>
+      <%= link_to "Log Out", signout_path, class: "button" %>
+    </div>
   <% end %>
 </header>
 <div class="container">
