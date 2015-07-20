@@ -104,8 +104,8 @@ $(document).ready(function(){
 
       }
     }).done(function(response){
-      console.log(response)
       var comment = $("<p><span class='comment_author'>"+ response.user + "</span> <span class='comment_body'>" + response.comment + "</span></p>");
+      console.log(comment)
       $(".comments").append(comment)
       })
   })

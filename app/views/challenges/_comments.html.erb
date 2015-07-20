@@ -3,11 +3,12 @@
       <input type="text" name="comment" id="comment">
       <button class="submit_comment">Add comment</button>
     </form>
-      <% @challenge.comments.each do |comment| %>
+    <% binding.pry %>
       <div class="comments">
+      <% @challenge.comments.each do |comment| %>
         <p><span class="comment_author"><%= comment.user.username%></span>
         <span class="comment_body"><%= comment.body %></span></p>
-      </div>
       <% end %>
+      </div>
 
 </div>
