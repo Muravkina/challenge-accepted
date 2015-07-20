@@ -105,10 +105,9 @@ $(document).ready(function(){
       }
     }).done(function(response){
       console.log(response)
-      var comment = $("<p><span>"+ response.user + "</span> <span>" + response.comment + "</span></p>");
+      var comment = $("<p><span class='comment_author'>"+ response.user + "</span> <span class='comment_body'>" + response.comment + "</span></p>");
       $(".comments").append(comment)
       })
-
   })
 })
 

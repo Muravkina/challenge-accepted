@@ -466,6 +466,9 @@ header {
 .comments {
   margin-left: 30px;
 }
+.comments p{
+  margin-bottom: 7px;
+}
 .comment_author {
   color: rgb(89, 193, 197);
 }
