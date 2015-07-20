@@ -49,7 +49,7 @@ $(document).ready(function(){
     }).done(function(response){
       console.log(response)
       $('.accept_challenge_button').hide()
-      $('#accept_challenge_button').append("<p class='this_challenge_accomplishe'>Accepted</p>")
+      $('img.this_challenge_accomplishe').fadeIn(500)
     })
    })
 

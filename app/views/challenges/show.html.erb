@@ -40,8 +40,9 @@
     <%= link_to 'Description', @challenge, class: "button" %>
     <%= link_to 'Accomplished', challenge_accepted_challenges_path(@challenge), class: "button" %>
   </div>
+  <img src='/assets/accepted_word.png' class='this_challenge_accomplishe' style="display: none">
   <% if @user_accomplished_challenge %>
-      <p class="this_challenge_accomplishe">Done</p>
+      <img src="/assets/completed" class="this_challenge_accomplishe done">
   <% elsif @user_accepted_challenge %>
     <button class= "this_challenge_accomplished button button-primary">Done</button>
 <!-- Form template -->
